@@ -1,19 +1,20 @@
 import logging
 import threading
+import time
 
 import RPi.GPIO as _gpio
 
 
 from task.task import Task
 
-class Blink:
+class Blink(threading.Thread):
 
 	def __init__(self,lock,queue,pin,init_level):
 		self._lock = lock
 		self._queue = queue
-		self._thread = threading.Thread(target = self.run, args = ())
 		self._pin = pin
 		self._init_level = init_level
+		super().__init__(target = self.run, args = ())
 
 	def initialize(self):
 		_gpio.setup(self._pin, _gpio.OUT, initial = self._init_level)
@@ -30,13 +31,4 @@ class Blink:
 			else:
 				print("Queue empty just waiting ",self._pin," ")
 			self._lock.release()
-		time.sleep(1)
-
-	def start(self):
-		self._thread.start()
-
-	def join (self):
-		self._thread.join()
-		
-	def get_thread(self):
-		return self._thread
+			time.sleep(1)

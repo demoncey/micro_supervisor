@@ -8,12 +8,13 @@ from random import randrange
 
 from task.task import Task
 
-class Bluetooth:
+class Bluetooth(threading.Thread):
 	
 	def __init__(self,lock,queue):
 		self._lock = lock
 		self._queue = queue
-		self._thread = threading.Thread(target = self.run, args = ())
+		self._wait = 0.1
+		super().__init__(target = self.run, args = ())
 
 	def run(self):
 		while(True):
@@ -22,13 +23,4 @@ class Bluetooth:
 			print("running bluetooth thread ",rand)
 			self._queue.put(Task("random task",rand))
 			self._lock.release()
-			time.sleep(0.1)
-
-	def start(self):
-		self._thread.start()
-
-	def join (self):
-		self._thread.join()
-
-	def get_thread(self):
-		return self._thread
+			time.sleep(0.2)
