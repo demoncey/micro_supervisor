@@ -9,6 +9,7 @@ from random import randrange
 from task.task import Task
 
 class Bluetooth:
+	
 	def __init__(self,lock,queue):
 		self._lock = lock
 		self._queue = queue
@@ -28,6 +29,6 @@ class Bluetooth:
 
 	def join (self):
 		self._thread.join()
-		
+
 	def get_thread(self):
 		return self._thread
