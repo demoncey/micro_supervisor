@@ -16,8 +16,9 @@ class Blink(threading.Thread):
 		self._init_level = init_level
 		super().__init__(target = self.run, args = ())
 
-	def initialize(self):
+	def init(self):
 		_gpio.setup(self._pin, _gpio.OUT, initial = self._init_level)
+		return self
 		
 	def run(self):
 		while(True):

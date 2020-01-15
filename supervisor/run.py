@@ -25,14 +25,18 @@ def main():
 	print("Warming up Robot supervisor ....")
 	init()
 
+	threads = []
+
 	bluetooth = Bluetooth(lock,queue)
-	motor = Motor(lock,queue,16,0)
+	motor = Motor(lock,queue)
 	blink_20 = Blink(lock,queue,20,_gpio.HIGH)
 	blink_21 = Blink(lock,queue,21,_gpio.HIGH)
 
-	blink_20.initialize()
-	blink_21.initialize()
-	motor.initialize(5,50)
+	blink_20.init()
+	blink_21.init()
+	motor.init(5,50)
+	motor.setup_motor("right",(16,0,0))
+	motor.setup_motor("left",(0,0,0))
 
 	bluetooth.start()
 	motor.start()
