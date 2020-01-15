@@ -8,7 +8,7 @@ import RPi.GPIO as _gpio
 from task.task import Task
 
 class Blink(threading.Thread):
-
+	_wait = 1
 	def __init__(self,lock,queue,pin,init_level):
 		self._lock = lock
 		self._queue = queue
@@ -31,4 +31,4 @@ class Blink(threading.Thread):
 			else:
 				print("Queue empty just waiting ",self._pin," ")
 			self._lock.release()
-			time.sleep(1)
+			time.sleep(self._wait)

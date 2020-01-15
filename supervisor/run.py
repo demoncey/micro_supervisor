@@ -26,12 +26,13 @@ def main():
 	init()
 
 	bluetooth = Bluetooth(lock,queue)
-	motor = Motor(lock,queue)
+	motor = Motor(lock,queue,16,0)
 	blink_20 = Blink(lock,queue,20,_gpio.HIGH)
 	blink_21 = Blink(lock,queue,21,_gpio.HIGH)
 
 	blink_20.initialize()
 	blink_21.initialize()
+	motor.initialize(5,50)
 
 	bluetooth.start()
 	motor.start()
