@@ -11,6 +11,9 @@ class Motor(threading.Thread):
 	_within = 0
 	_wait = 0.5
 	_motors = {}
+
+	set_pwm = lambda self,x : _gpio.setup(x, _gpio.OUT)
+	set_pin = lambda self,x,y : _gpio.setup(x, _gpio.OUT, initial = y)
 	
 	def __init__(self,lock,queue):
 		self._lock = lock
@@ -24,30 +27,25 @@ class Motor(threading.Thread):
 
 	def setup_motor(self,name,cfg):
 		self._motors[name] = cfg
-		set_pwm = lambda x : _gpio.setup(x, _gpio.OUT)
-		set_pwm(cfg[0])
-		set_pin = lambda x : _gpio.setup(x, _gpio.OUT, initial =_gpio.LOW)
-		set_pin(cfg[1])
-		set_pin(cfg[2])
+		self.set_pwm(cfg[0])
+		self.set_pin(cfg[1],_gpio.LOW)
+		self.set_pin(cfg[2],_gpio.LOW)
 		return self		
 
 	def forward_motor(self,name):
 		cfg = self._motors[name]
-		set_pin = lambda x,y : _gpio.setup(x, _gpio.OUT, initial = y)
-		set_pin(cfg(1),_gpio.HIGH)
-		set_pin(cfg(1),_gpio.LOW)
+		self.set_pin(cfg(1),_gpio.HIGH)
+		self.set_pin(cfg(1),_gpio.LOW)
 		
 	def backward_motor(self,name):
 		cfg = self._motors[name]
-		set_pin = lambda x,y : _gpio.setup(x, _gpio.OUT, initial = y)
-		set_pin(cfg(1),_gpio.LOW)
-		set_pin(cfg(1),_gpio.HIGH)
+		self.set_pin(cfg(1),_gpio.LOW)
+		self.set_pin(cfg(1),_gpio.HIGH)
 
 	def stop_motor(self,name):
 		cfg = self._motors[name]
-		set_pin = lambda x,y : _gpio.setup(x, _gpio.OUT, initial = y)
-		set_pin(cfg(1),_gpio.LOW)
-		set_pin(cfg(1),_gpio.LOW)
+		self.set_pin(cfg(1),_gpio.LOW)
+		self.set_pin(cfg(1),_gpio.LOW)
 
 	def run(self):
 		motor_A = _gpio.PWM(self._motors["right"][0], self._freq)
