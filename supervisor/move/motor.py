@@ -14,6 +14,7 @@ class Motor(threading.Thread):
 
 	set_pwm = lambda self,x : _gpio.setup(x, _gpio.OUT)
 	set_pin = lambda self,x,y : _gpio.setup(x, _gpio.OUT, initial = y)
+	pwm = lambda self,x: _gpio.PWM(x,y)#check
 	
 	def __init__(self,lock,queue):
 		self._lock = lock
